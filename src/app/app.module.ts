@@ -4,7 +4,9 @@ import { NgModule } from '@angular/core';
 import { 
   MatButtonModule,
   MatToolbarModule, 
-  MatListModule
+  MatListModule, 
+  MatGridListModule, 
+  MatCardModule
 } from '@angular/material'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
 // import { FormsModule } from '@angular/forms';
@@ -27,6 +29,8 @@ import { MenuComponent } from './menu/menu.component';
     MatButtonModule,
     MatToolbarModule,
     MatListModule,
+    MatGridListModule,
+    MatCardModule,
     FlexLayoutModule
     // FormsModule,
     // HttpModule,
