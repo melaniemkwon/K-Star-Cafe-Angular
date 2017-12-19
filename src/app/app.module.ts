@@ -9,10 +9,13 @@ import {
   MatListModule, 
   MatGridListModule, 
   MatCardModule,
-  MatDialogModule 
+  MatDialogModule,
+  MatSlideToggleModule,
+  MatSelectModule
 } from '@angular/material'; 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 // import { HttpModule } from '@angular/http';
 
 import 'hammerjs';
@@ -56,10 +59,12 @@ import { LoginComponent } from './login/login.component';
     MatGridListModule,
     MatCardModule,
     MatDialogModule,
-    // MatDialogRef,
+    MatSlideToggleModule,
+    MatSelectModule,
     FlexLayoutModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
     // HttpModule,
   ],
   providers: [ 
