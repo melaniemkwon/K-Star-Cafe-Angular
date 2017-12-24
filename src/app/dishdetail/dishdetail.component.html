@@ -34,14 +34,42 @@
   </div>
 
   <div fxFlex="40" *ngIf="dish">
-    <mat-list fxFlex>
-      <h2>Comments</h2>
-      <mat-list-item *ngFor="let c of dish.comments">
-        <p mat-line> {{c.comment}} </p>
-        <p mat-line> {{c.rating}} Stars</p>
-        <p mat-line>-- {{c.author}} {{c.date | date}} </p>
+    <div fxFlex>
+      <mat-list>
+        <h2>Comments</h2>
+        <mat-list-item *ngFor="let c of dish.comments">
+          <p mat-line> {{c.comment}} </p>
+          <p mat-line> {{c.rating}} Stars</p>
+          <p mat-line>-- {{c.author}} {{c.date | date}} </p>
+        </mat-list-item>
+      <mat-list-item *ngIf="commentForm.valid">
+        <p mat-line> {{comment.comment}} </p>
+        <p mat-line> {{comment.rating}} Stars</p>
+        <p mat-line>-- {{comment.author}} {{comment.date | date}} </p>
       </mat-list-item>
-    </mat-list>
+      </mat-list>
+      <form novalidate [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="full-width" dividerColor="{{ formErrors.author ? 'warn': 'primary' }}">
+          <input matInput formControlName="author" placeholder="Name" type="text" required [(ngModel)]="commentForm.author">
+          <mat-hint>
+            <span [hidden]="!(formErrors.author)">{{formErrors.author}}</span>
+          </mat-hint>
+        </mat-form-field>
+        <p>
+          <mat-slider min="1" max="5" step="1" tickInterval="1" value="5" thumbLabel formControlName="rating" [(ngModel)]="commentForm.rating"></mat-slider>
+        </p>
+        <p>
+          <mat-form-field class="full-width" dividerColor="{{ formErrors.comment ? 'warn': 'primary' }}">
+            <textarea matInput formControlName="comment" placeholder="Your Comment" rows=12 [(ngModel)]="commentForm.comment"></textarea>
+            <mat-hint>
+              <span [hidden]="!(formErrors.comment)">{{formErrors.comment}}</span>
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <button type="submit" mat-button class="background-primary text-floral-white"
+            [disabled]="commentForm.invalid">Submit</button>
+      </form>
+    </div>
   </div>
   <div [hidden]="dish">
     <mat-spinner></mat-spinner> <h4>Loading . . . Please wait.</h4>
