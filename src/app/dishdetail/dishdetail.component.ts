@@ -27,6 +27,7 @@ export class DishdetailComponent implements OnInit {
     'author': '',
     'comment': ''
   };
+  errMess: string;
 
   validationMessages = {
     'author': {
@@ -52,7 +53,8 @@ export class DishdetailComponent implements OnInit {
 
     this.route.params //anytime params observable is updated, dish will get updated
       .switchMap( (params: Params) => this.dishservice.getDish(+params['id']))
-      .subscribe( dish => { this.dish = dish; this.setPrevNext(dish.id) } );
+      .subscribe( dish => { this.dish = dish; this.setPrevNext(dish.id) },
+        errmess => this.errMess = <any>errmess );
   }
 
   setPrevNext(dishId: number) {
