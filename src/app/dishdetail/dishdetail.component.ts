@@ -18,17 +18,19 @@ import 'rxjs/add/operator/switchMap';
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  dishcopy = null;
   dishIds: number[];
   prev: number;
   next: number;
   commentForm: FormGroup;
   comment: Comment;
+  errMess: string;
+
   formErrors = {
     'author': '',
     'comment': ''
   };
-  errMess: string;
-
+  
   validationMessages = {
     'author': {
       'required': 'Name is required.',
@@ -53,7 +55,7 @@ export class DishdetailComponent implements OnInit {
 
     this.route.params //anytime params observable is updated, dish will get updated
       .switchMap( (params: Params) => this.dishservice.getDish(+params['id']))
-      .subscribe( dish => { this.dish = dish; this.setPrevNext(dish.id) },
+      .subscribe( dish => { this.dish = dish; this.dishcopy = dish; this.setPrevNext(dish.id) },
         errmess => this.errMess = <any>errmess );
   }
 
@@ -101,7 +103,13 @@ export class DishdetailComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dish.comments.push(this.comment);
+    /*
+     * When server confirms that change is successful on server side, 
+     * then update UI to reflect change in dish object.
+     */
+    this.dishcopy.comments.push(this.comment);
+    this.dishcopy.save()
+      .subscribe(dish => this.dish = dish);
     
     console.log(this.comment);
     this.comment = null;
