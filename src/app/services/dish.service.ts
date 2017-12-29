@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Dish } from '../shared/dish';
-import { Http, Response } from '@angular/http';
+// import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { baseURL } from '../shared/baseurl'
+// import { baseURL } from '../shared/baseurl'
 import { ProcessHttpMsgService} from './process-httpmsg.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
 import 'rxjs/add/observable/of';

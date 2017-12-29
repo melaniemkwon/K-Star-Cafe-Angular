@@ -114,10 +114,6 @@ export class DishdetailComponent implements OnInit {
   }
 
   onSubmit() {
-    /*
-     * When server confirms that change is successful on server side, 
-     * then update UI to reflect change in dish object.
-     */
     this.dishcopy.comments.push(this.comment);
     this.dishcopy.save()
       .subscribe(dish => this.dish = dish);

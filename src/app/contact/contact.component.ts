@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Feedback, ContactType } from '../shared/feedback';
-import { flyInOut } from '../animations/app.animation';
+import { visibility, flyInOut, expand } from '../animations/app.animation';
+import { FeedbackService } from '../services/feedback.service';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-contact',
@@ -12,14 +14,19 @@ import { flyInOut } from '../animations/app.animation';
     'style': 'display: block;'
   },
   animations: [
-    flyInOut()
+    flyInOut(),
+    visibility(),
+    expand()
   ]
 })
 export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackcopy = null;
   contactType = ContactType;
+  visibility = 'shown';
+  
   formErrors = {
     'firstname': '',
     'lastname': '',
@@ -48,7 +55,9 @@ export class ContactComponent implements OnInit {
     }
   };
 
-  constructor(private fb: FormBuilder) { 
+  constructor(private feedbackservice: FeedbackService,
+    private fb: FormBuilder,
+    @Inject('BaseURL') private BaseURL) { 
     this.createForm();
   }
 
@@ -69,7 +78,7 @@ export class ContactComponent implements OnInit {
     this.feedbackForm.valueChanges
       .subscribe(data => this.onValueChanged(data));
 
-    this.onValueChanged(); //(re)set form validation messages
+    this.onValueChanged(); 
   }
 
   onValueChanged(data?: any) {
@@ -89,8 +98,21 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback = this.feedbackForm.value;
-    console.log(this.feedback);
+    this.visibility = 'hidden';
+
+    this.feedbackcopy = this.feedbackForm.value;
+
+    this.feedbackservice.submitFeedback(this.feedbackcopy)
+      .subscribe(fbSubmitted => {
+        this.feedback = fbSubmitted; 
+        this.feedbackcopy = null;
+
+        setTimeout( () => {
+          this.feedback = null;
+          this.visibility = 'shown';
+        }, 5000);
+      })
+
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
